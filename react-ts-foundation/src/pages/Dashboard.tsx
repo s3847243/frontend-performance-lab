@@ -1,8 +1,14 @@
 import { FeatureToggle } from "../components/FeatureToggle";
 import { useFeatureFlags } from "../hooks/useFeatureFlags";
 
-export function Dashboard() {
+export default function Dashboard() {
   const { flags, toggleFlag } = useFeatureFlags();
+  const loadHeavyUtil = async () => {
+  const { expensiveCalculation } = await import("../utils/heavy");
+    console.log(expensiveCalculation());
+  };
+
+
 
   return (
     <div>
@@ -14,6 +20,12 @@ export function Dashboard() {
           onToggle={toggleFlag}
         />
       ))}
+
+      <br>
+      </br>
+      <button onClick={loadHeavyUtil}>
+        Run Expensive Calculation
+      </button>
     </div>
   );
 }
