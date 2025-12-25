@@ -1,0 +1,23 @@
+{
+  "scripts": {
+    "dev:ssr": "tsx ssr/server.ts",
+    "build:ssr:client": "vite build --config ssr/vite.config.ts",
+    "build:ssr:server": "vite build --ssr ssr/entry-server.tsx --config ssr/vite.config.ts --outDir dist-ssr/server",
+    "build:ssr": "npm run build:ssr:client && npm run build:ssr:server",
+    "preview:ssr": "NODE_ENV=production node dist-ssr/server-runner.cjs"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "vite": "^7.3.0"
+  }
+}
