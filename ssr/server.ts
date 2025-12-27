@@ -18,7 +18,7 @@ async function createServer() {
 
     app.use(vite.middlewares);
 
-    app.use("*", async (req, res) => {
+   app.use(async (req, res) => {
       try {
         const url = req.originalUrl;
 
@@ -26,11 +26,15 @@ async function createServer() {
         template = await vite.transformIndexHtml(url, template);
 
         const mod = await vite.ssrLoadModule("/entry-server.tsx");
+
         const { html, head } = mod.render(url);
+
+        const isCsr = url.startsWith("/csr");
 
         const out = template
           .replace("<!--app-head-->", head)
-          .replace("<!--app-html-->", html);
+          .replace("<!--app-html-->", isCsr ? "" : html);
+
 
         res.status(200).set({ "Content-Type": "text/html" }).end(out);
       } catch (e: any) {
@@ -39,13 +43,14 @@ async function createServer() {
         res.status(500).end(e?.message);
       }
     });
+
   } else {
     const clientDir = path.resolve(__dirname, "../dist-ssr/client");
     const serverEntry = path.resolve(__dirname, "../dist-ssr/server/entry-server.js");
 
     app.use(express.static(clientDir, { index: false }));
 
-    app.use("*", async (req, res) => {
+    app.use( async (req, res) => {
       const url = req.originalUrl;
       const template = fs.readFileSync(path.join(clientDir, "index.html"), "utf-8");
 

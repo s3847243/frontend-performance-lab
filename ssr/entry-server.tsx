@@ -5,12 +5,11 @@ import { App } from "./App";
 export function render(url: string) {
   const html = renderToString(<App />);
 
-  // “SEO” meta tags (SSR output)
+  const mode = url.startsWith("/csr") ? "CSR" : "SSR";
+
   const head = `
-    <title>SSR Job Listings</title>
-    <meta name="description" content="A tiny Vite SSR demo with hydration and meta tags." />
-    <meta property="og:title" content="SSR Job Listings" />
-    <meta property="og:description" content="Server-rendered HTML + client hydration with Vite." />
+    <title>${mode} Job Listings</title>
+    <meta name="description" content="Vite ${mode} demo with hydration." />
   `;
 
   return { html, head };
